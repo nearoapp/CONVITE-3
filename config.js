@@ -6,7 +6,7 @@
 window.CONFIG = {
   // --- Aniversariante ---
   guestName: 'Livia',
-  age: '30 anos', // deixe '' para não exibir
+  age: '18 anos', // deixe '' para não exibir
 
   // --- Data e hora da festa (formato ISO, usado no contador) ---
   partyDateISO: '2026-10-31T17:00:00',
@@ -14,7 +14,7 @@ window.CONFIG = {
   displayTime: '17h',
 
   // --- Local ---
-  venueName: 'Espaço Villa Jardim',
+  venueName: 'Espaço Salão de festas ',
   venueAddress: 'Rua Aratimbo, 389 - Vila Livieiro, São Paulo - SP',
   // Cole um link específico do Google Maps aqui, ou deixe '' para gerar
   // automaticamente a partir do endereço acima.
