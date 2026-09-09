@@ -180,12 +180,23 @@ input { font-family: inherit; }
   z-index: 1;
   perspective: 1200px;
   transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 /* Ao clicar, o envelope cresce até preencher a tela toda,
    igual ao efeito de zoom do vídeo de referência. */
 .envelope-screen.is-zooming .envelope-stage {
-  transform: scale(11);
+  transform: translateZ(0) scale(11);
+}
+
+/* Durante o zoom, pausamos as animações decorativas (florais, selo)
+   para liberar o navegador pra renderizar só o essencial e evitar
+   engasgos, principalmente em celulares mais simples. */
+.envelope-screen.is-zooming .corner-floral,
+.envelope-screen.is-zooming .envelope-seal {
+  animation-play-state: paused;
 }
 
 .envelope-screen.is-zooming .envelope-hint,
@@ -238,6 +249,7 @@ input { font-family: inherit; }
   transform: translateY(6%);
   transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.5s, opacity 0.5s ease 0.5s;
   box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.25);
+  will-change: transform;
 }
 
 .envelope-letter-line {
@@ -262,6 +274,7 @@ input { font-family: inherit; }
   transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.35s;
   z-index: 3;
   border-radius: 4px 4px 0 0;
+  will-change: transform;
 }
 
 .envelope-seal {
@@ -340,7 +353,7 @@ input { font-family: inherit; }
 .glow-orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(70px);
+  filter: blur(40px);
   opacity: 0.18;
   z-index: 0;
   pointer-events: none;
