@@ -14,7 +14,7 @@ window.CONFIG = {
   displayTime: '17h',
 
   // --- Local ---
-  venueName: 'Espaço Villa Jardim',
+  venueName: 'Espaço Salão de festa',
   venueAddress: 'Rua Aratimbo, 389 - Vila Livieiro, São Paulo - SP',
   // Cole um link específico do Google Maps aqui, ou deixe '' para gerar
   // automaticamente a partir do endereço acima.
