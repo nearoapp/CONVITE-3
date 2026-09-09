@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo — Convidados</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Tela de senha simples (proteção básica, não é uma segurança real) -->
+  <div class="admin-lock" id="admin-lock">
+    <p class="admin-lock-title">Área restrita</p>
+    <form class="admin-lock-form" id="admin-lock-form">
+      <input type="password" id="admin-lock-input" placeholder="Senha" autocomplete="current-password" inputmode="numeric">
+      <button type="submit" class="btn btn-confirm">Entrar</button>
+      <p class="admin-lock-error" id="admin-lock-error"></p>
+    </form>
+  </div>
+
+  <!-- Painel (fica escondido até a senha correta) -->
+  <div class="admin-page" id="admin-page" hidden>
+    <div class="admin-header">
+      <h1 class="admin-title">Lista de confirmados</h1>
+      <p class="admin-count">Total de pessoas: <strong id="admin-total">0</strong></p>
+    </div>
+    <p class="admin-source" id="admin-source"></p>
+
+    <div class="admin-table-wrap">
+      <table class="admin-table" id="admin-table" hidden>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nome</th>
+            <th>Acompanhantes</th>
+            <th>Recado</th>
+            <th>Confirmado em</th>
+          </tr>
+        </thead>
+        <tbody id="admin-tbody"></tbody>
+      </table>
+      <div class="admin-empty" id="admin-empty">
+        Nenhuma confirmação de presença ainda.
+      </div>
+    </div>
+
+    <div class="admin-actions">
+      <button type="button" class="btn-ghost" id="btn-refresh">Atualizar lista</button>
+      <button type="button" class="btn-danger" id="btn-clear">Limpar lista</button>
+      <a href="index.html" class="btn-ghost">Voltar ao convite</a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
