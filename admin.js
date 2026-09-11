@@ -77,7 +77,11 @@ function formatarData(valor) {
 
 /* ---------- Gerador de links individuais ---------- */
 function linkBaseDoConvite() {
-  // admin.html -> index.html, mantendo o mesmo domínio/pasta.
+  if (CONFIG.siteBaseUrl) {
+    return `${CONFIG.siteBaseUrl.replace(/\/$/, '')}/index.html`;
+  }
+  // Sem siteBaseUrl definido: tenta usar o endereço atual do navegador.
+  // Só funciona corretamente se esta página foi aberta pelo link publicado.
   return window.location.href.replace(/admin\.html.*$/, 'index.html');
 }
 
@@ -85,7 +89,11 @@ function iniciarGeradorLinks() {
   const botao = document.getElementById('btn-gerar-links');
   const campoNomes = document.getElementById('gen-nomes');
   const resultado = document.getElementById('gen-resultado');
+  const aviso = document.getElementById('gen-aviso-local');
   if (!botao) return;
+
+  const rodandoLocalmente = !CONFIG.siteBaseUrl && window.location.protocol === 'file:';
+  if (aviso) aviso.hidden = !rodandoLocalmente;
 
   botao.addEventListener('click', () => {
     const nomes = campoNomes.value

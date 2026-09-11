@@ -1007,6 +1007,21 @@ button:focus-visible,
   margin: 0.6rem 0;
 }
 
+.admin-generator-aviso {
+  font-size: 0.78rem;
+  color: #b3521f;
+  background: rgba(255, 176, 59, 0.15);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin: 0 0 0.6rem;
+}
+
+.admin-generator-aviso code {
+  background: rgba(0, 0, 0, 0.08);
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+}
+
 .admin-generator textarea {
   width: 100%;
   box-sizing: border-box;

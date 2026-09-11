@@ -83,6 +83,14 @@ window.CONFIG = {
   // Não é uma segurança real, pois roda no navegador do visitante.
   adminPasscode: '1234',
 
+  // --- Endereço público do site, usado pelo gerador de links individuais
+  // no admin.html. Preencha com o link da Vercel depois de publicar
+  // (ex: 'https://convite-3.vercel.app'), SEM barra no final.
+  // Se deixar vazio, o gerador tenta adivinhar pelo endereço atual do
+  // navegador — o que só funciona se você abrir o admin.html pelo link
+  // publicado, não pelo arquivo local do computador.
+  siteBaseUrl: 'https://convite-3.vercel.app',
+
   // --- Banco de dados (Firebase Firestore) ---
   // Deixe os campos vazios para o site funcionar só com localStorage
   // (cada convidado confirma apenas no próprio celular).

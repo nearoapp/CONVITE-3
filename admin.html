@@ -38,6 +38,12 @@
         Digite um nome por linha. Cada convidado recebe um link só dele — o nome já vem
         preenchido no formulário, e a resposta fica marcada no painel com o link de origem.
       </p>
+      <p class="admin-generator-aviso" id="gen-aviso-local" hidden>
+        ⚠ Você está abrindo esta página como arquivo local (não pelo link publicado).
+        Os links gerados agora não vão funcionar para outras pessoas — preencha
+        <code>siteBaseUrl</code> no config.js com o endereço da Vercel, ou abra este
+        admin.html pelo link publicado do site.
+      </p>
       <textarea id="gen-nomes" rows="4" placeholder="Maria Silva&#10;João Pereira&#10;Ana Costa"></textarea>
       <button type="button" class="btn-ghost" id="btn-gerar-links">Gerar links</button>
       <div id="gen-resultado" class="admin-generator-resultado"></div>
