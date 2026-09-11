@@ -252,20 +252,20 @@ function iniciarEnvelope() {
     if (flash) {
       setTimeout(() => {
         flash.classList.add('is-active');
-        setTimeout(() => flash.classList.remove('is-active'), 380);
-      }, 2500);
+        setTimeout(() => flash.classList.remove('is-active'), 450);
+      }, 4000);
     }
 
     // 5) por fim, a tela do envelope se dissolve revelando o convite
     setTimeout(() => {
       screen.classList.add('is-hidden');
-    }, 3600);
+    }, 5200);
 
     setTimeout(() => {
       screen.style.display = 'none';
       invite.setAttribute('aria-hidden', 'false');
       document.body.classList.remove('no-scroll');
-    }, 4250);
+    }, 5850);
   }
 
   screen.addEventListener('click', abrir, { once: true });
