@@ -25,8 +25,8 @@ window.CONFIG = {
   // 'bolsa' | 'perfume' | 'hidratante' | 'calcado' | 'joia' | 'vestido' | 'calca'
   giftCategories: [
     {
-      icon: 'joia',
-      name: 'Joias - Prata/Dourado',
+      icon: 'Acessorios',
+      name: 'Acessorios - Prata/Dourado',
       desc: 'Colares, anéis ou brincos',
       link: 'https://www.google.com/search?tbm=shop&q=joias+femininas'
     },
@@ -38,13 +38,13 @@ window.CONFIG = {
     },
     {
       icon: 'vestido',
-      name: 'Vestidos - Tamanho P',
+      name: 'Roupas - Tamanho P/36',
       desc: 'Modelos e cores à sua escolha',
-      link: 'https://www.google.com/search?tbm=shop&q=vestido+feminino+tamanho+p'
+      link: 'https://www.google.com/goto?url=CAESkwEB6zswFU-qKyzpWVzV6KbpPzsDy6bGPGeH3WCLvRITjwxGLSY4pXXASc2bcPnvGYi_Aurdrs0abMrji80Wm2AtuRcvHd1CXzFHMnnFPWK1rYiUYr6WiC8J9gY2B0-v3RjP5NCladLhh02y7ahbclvIYeY36n5PNQuD1_NtvwtP0wWdH0QRsrr3NAhkNP9CSYxBMa0'
     },
     {
       icon: 'calcado',
-      name: 'Calçados - Tamanho 36',
+      name: 'Calçados - Tamanho 37',
       desc: 'Sandálias, tênis ou sapatos',
       link: 'https://www.google.com/search?tbm=shop&q=calcado+feminino+tamanho+36'
     },
@@ -64,7 +64,7 @@ window.CONFIG = {
 
   // --- RSVP / WhatsApp ---
   rsvpDeadline: '05 de novembro',
-  whatsappNumber: '5511999999999', // DDI + DDD + número, apenas dígitos
+  whatsappNumber: '5511966524934', // DDI + DDD + número, apenas dígitos
   whatsappMessageTemplate:
     'Oi! Aqui é {nome}. Confirmando presença na festa de aniversário! 🎉',
 
