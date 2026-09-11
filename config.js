@@ -34,14 +34,13 @@ window.CONFIG = {
       icon: 'perfume',
       name: 'Perfumes / Body Splash',
       desc: 'Fragrâncias florais ou amadeiradas',
-      link: 'https://www.google.com/search?tbm=shop&q=perfume+feminino'
+      link:'https://www.google.com/goto?url=CAESkwEB6zswFU-qKyzpWVzV6KbpPzsDy6bGPGeH3WCLvRITjwxGLSY4pXXASc2bcPnvGYi_Aurdrs0abMrji80Wm2AtuRcvHd1CXzFHMnnFPWK1rYiUYr6WiC8J9gY2B0-v3RjP5NCladLhh02y7ahbclvIYeY36n5PNQuD1_NtvwtP0wWdH0QRsrr3NAhkNP9CSYxBMa0'
     },
     {
       icon: 'vestido',
       name: 'Roupas - Tamanho P/36',
       desc: 'Modelos e cores à sua escolha',
-      link: 'https://www.google.com/goto?url=CAESkwEB6zswFU-qKyzpWVzV6KbpPzsDy6bGPGeH3WCLvRITjwxGLSY4pXXASc2bcPnvGYi_Aurdrs0abMrji80Wm2AtuRcvHd1CXzFHMnnFPWK1rYiUYr6WiC8J9gY2B0-v3RjP5NCladLhh02y7ahbclvIYeY36n5PNQuD1_NtvwtP0wWdH0QRsrr3NAhkNP9CSYxBMa0'
-    },
+      link: 'https://www.google.com/aclk?sa=L&ai=DChsSEwivyOn9p-WWAxUNRkgAHSUyAigYACICCAEQABoCY2U&co=1&gclid=EAIaIQobChMIr8jp_afllgMVDUZIAB0lMgIoEAAYASAAEgKD6fD_BwE&sph&cid=CAAS0gHkaBiwcUkVUfrsNSGTct0JwP64hyuknAGYCJ-f93Spu8dR7qgkH_pNJOKbtxJUb33Hx1L_-x3D96DYup4AC6YJfDmOO0KGBKdqnTD7aIqm0i1RG_UewvMKAdCpjr-WvvVanKrm37SGWrUDrgfOKDbXwcqzgkH4W6vtvwUCBcp4J8Ql6qTwiFECcNgtHuTO-4v5F-QY6p8_rk_D7SyGcO2Nxfs_TqsOUH_6goIL4yenTW0UcvCmdZc6gHioH6RcSOkRYT5cXCjJJPCpTS-ou0--Kr4&cce=1&sig=AOD64_3sKjdYtWiDVSJP-UD6NwxznA8K1g&q&adurl&ved=2ahUKEwiyxeT9p-WWAxXNEbkGHd1yMjAQ0Qx6BAgWEAE'
     {
       icon: 'calcado',
       name: 'Calçados - Tamanho 37',
