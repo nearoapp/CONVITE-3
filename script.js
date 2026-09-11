@@ -52,6 +52,7 @@ async function salvarConvidado(dados) {
         status: dados.status,
         acompanhantes: dados.acompanhantes,
         mensagem: dados.mensagem,
+        linkDe: dados.linkDe || null,
         confirmadoEm: firebase.firestore.FieldValue.serverTimestamp()
       });
       return;
@@ -85,6 +86,23 @@ document.body.classList.add('no-scroll');
 /* ============================================================
    PREENCHER CONTEÚDO A PARTIR DO CONFIG
    ============================================================ */
+/* ============================================================
+   LINK INDIVIDUAL DO CONVIDADO (?convidado=Nome)
+   Gerado pelo painel admin, ajuda a rastrear de onde veio cada resposta.
+   ============================================================ */
+function lerConvidadoDaUrl() {
+  const parametros = new URLSearchParams(window.location.search);
+  const nome = parametros.get('convidado');
+  return nome ? nome.trim() : '';
+}
+
+function iniciarLinkIndividual() {
+  const nomeConvidado = lerConvidadoDaUrl();
+  if (!nomeConvidado) return;
+  const campoNome = document.getElementById('rsvp-name');
+  if (campoNome && !campoNome.value) campoNome.value = nomeConvidado;
+}
+
 function preencherConteudo() {
   document.getElementById('guest-name').textContent = CONFIG.guestName;
   document.getElementById('guest-age').textContent = CONFIG.age || '';
@@ -336,35 +354,6 @@ function iniciarCalendario() {
 }
 
 /* ============================================================
-   COMPARTILHAR CONVITE
-   ============================================================ */
-function iniciarCompartilhar() {
-  const botao = document.getElementById('btn-share');
-  if (!botao) return;
-
-  botao.addEventListener('click', async () => {
-    const url = window.location.href;
-    const titulo = `Convite de aniversário de ${CONFIG.guestName}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({ title: titulo, url });
-        return;
-      } catch (erro) {
-        // usuário cancelou o compartilhamento nativo; segue para copiar o link
-      }
-    }
-
-    try {
-      await navigator.clipboard.writeText(url);
-      mostrarToast('Link do convite copiado!');
-    } catch (erro) {
-      mostrarToast('Não foi possível copiar o link.');
-    }
-  });
-}
-
-/* ============================================================
    RSVP — SALVAR CONVIDADO E ABRIR WHATSAPP
    ============================================================ */
 function abrirWhatsapp(nome) {
@@ -414,7 +403,8 @@ function iniciarRsvp() {
       nome,
       status,
       acompanhantes: vaiComparecer ? Number(campoAcompanhantes.value) || 0 : 0,
-      mensagem: campoMensagem.value.trim()
+      mensagem: campoMensagem.value.trim(),
+      linkDe: lerConvidadoDaUrl() || null
     });
 
     if (vaiComparecer) {
@@ -458,11 +448,11 @@ function dispararConfete() {
 document.addEventListener('DOMContentLoaded', () => {
   iniciarBanco();
   preencherConteudo();
+  iniciarLinkIndividual();
   iniciarEnvelope();
   iniciarContagem();
   iniciarMusica();
   iniciarMenuAtalhos();
   iniciarCalendario();
-  iniciarCompartilhar();
   iniciarRsvp();
 });

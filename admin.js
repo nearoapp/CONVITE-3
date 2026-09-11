@@ -75,6 +75,50 @@ function formatarData(valor) {
   });
 }
 
+/* ---------- Gerador de links individuais ---------- */
+function linkBaseDoConvite() {
+  // admin.html -> index.html, mantendo o mesmo domínio/pasta.
+  return window.location.href.replace(/admin\.html.*$/, 'index.html');
+}
+
+function iniciarGeradorLinks() {
+  const botao = document.getElementById('btn-gerar-links');
+  const campoNomes = document.getElementById('gen-nomes');
+  const resultado = document.getElementById('gen-resultado');
+  if (!botao) return;
+
+  botao.addEventListener('click', () => {
+    const nomes = campoNomes.value
+      .split('\n')
+      .map((linha) => linha.trim())
+      .filter(Boolean);
+
+    resultado.innerHTML = '';
+    if (nomes.length === 0) return;
+
+    nomes.forEach((nome) => {
+      const link = `${linkBaseDoConvite()}?convidado=${encodeURIComponent(nome)}`;
+      const linha = document.createElement('div');
+      linha.className = 'admin-generator-item';
+      linha.innerHTML = `
+        <span>${nome}</span>
+        <input type="text" value="${link}" readonly>
+        <button type="button">Copiar</button>
+      `;
+      linha.querySelector('button').addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(link);
+          linha.querySelector('button').textContent = 'Copiado!';
+          setTimeout(() => { linha.querySelector('button').textContent = 'Copiar'; }, 1500);
+        } catch (erro) {
+          linha.querySelector('input').select();
+        }
+      });
+      resultado.appendChild(linha);
+    });
+  });
+}
+
 /* ---------- Renderização da lista ---------- */
 let listaAtual = [];
 let filtroAtual = 'todos';
@@ -114,12 +158,22 @@ function renderizarLista(lista) {
     const statusRotulo = convidado.status === 'recusado'
       ? '<span class="status-pill status-pill--recusado">Não vai</span>'
       : '<span class="status-pill status-pill--confirmado">Confirmado</span>';
+
+    let origemRotulo = '<span class="origem-generica">Link geral</span>';
+    if (convidado.linkDe) {
+      const bate = convidado.linkDe.trim().toLowerCase() === (convidado.nome || '').trim().toLowerCase();
+      origemRotulo = bate
+        ? `<span class="origem-ok">${convidado.linkDe}</span>`
+        : `<span class="origem-alerta" title="O nome digitado é diferente do link usado — confira se não foi repassado">⚠ ${convidado.linkDe}</span>`;
+    }
+
     linha.innerHTML = `
       <td>${indice + 1}</td>
       <td>${convidado.nome || '—'}</td>
       <td>${statusRotulo}</td>
       <td>${convidado.status === 'recusado' ? '—' : (convidado.acompanhantes ? '+' + convidado.acompanhantes : '—')}</td>
       <td>${convidado.mensagem || '—'}</td>
+      <td>${origemRotulo}</td>
       <td>${formatarData(convidado.confirmadoEm)}</td>
     `;
     corpo.appendChild(linha);
@@ -190,6 +244,7 @@ function iniciarPainel() {
 
   carregarConvidados();
   iniciarFiltros();
+  iniciarGeradorLinks();
 
   document.getElementById('btn-refresh').addEventListener('click', carregarConvidados);
   document.getElementById('btn-clear').addEventListener('click', limparLista);

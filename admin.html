@@ -32,6 +32,17 @@
     </div>
     <p class="admin-source" id="admin-source"></p>
 
+    <details class="admin-generator">
+      <summary>Gerar links individuais para os convidados</summary>
+      <p class="admin-generator-hint">
+        Digite um nome por linha. Cada convidado recebe um link só dele — o nome já vem
+        preenchido no formulário, e a resposta fica marcada no painel com o link de origem.
+      </p>
+      <textarea id="gen-nomes" rows="4" placeholder="Maria Silva&#10;João Pereira&#10;Ana Costa"></textarea>
+      <button type="button" class="btn-ghost" id="btn-gerar-links">Gerar links</button>
+      <div id="gen-resultado" class="admin-generator-resultado"></div>
+    </details>
+
     <div class="admin-filters" id="admin-filters">
       <button type="button" class="admin-filter-btn is-active" data-filtro="todos">Todos</button>
       <button type="button" class="admin-filter-btn" data-filtro="confirmado">Confirmados</button>
@@ -47,6 +58,7 @@
             <th>Status</th>
             <th>Acompanhantes</th>
             <th>Recado</th>
+            <th>Link de</th>
             <th>Respondido em</th>
           </tr>
         </thead>
