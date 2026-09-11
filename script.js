@@ -261,14 +261,20 @@ function iniciarContagem() {
    TOAST DE FEEDBACK
    ============================================================ */
 let toastTimeout;
-function mostrarToast(mensagem) {
+function mostrarToast(mensagem, variante) {
   const toast = document.getElementById('toast');
-  toast.textContent = mensagem;
+  toast.classList.remove('toast--pix');
+  if (variante === 'pix') {
+    toast.innerHTML = `<span class="toast-pix-label">Pix confirmado</span><span class="toast-pix-msg">${mensagem}</span>`;
+    toast.classList.add('toast--pix');
+  } else {
+    toast.textContent = mensagem;
+  }
   toast.classList.add('is-visible');
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
     toast.classList.remove('is-visible');
-  }, 2600);
+  }, 3400);
 }
 
 /* ============================================================
@@ -309,9 +315,9 @@ function iniciarMenuAtalhos() {
     botaoPix.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(CONFIG.pixKey);
-        mostrarToast(`Chave Pix copiada! (${CONFIG.pixKeyType || 'Pix'})`);
+        mostrarToast('muito obrigada pelo carinho e generosidade', 'pix');
       } catch (erro) {
-        mostrarToast(`Chave Pix: ${CONFIG.pixKey}`);
+        mostrarToast(`Chave Pix: ${CONFIG.pixKey}`, 'pix');
       }
     });
   }
