@@ -81,7 +81,26 @@ window.CONFIG = {
   // --- Senha simples para abrir o admin.html ---
   // Proteção básica só para afastar curiosos; troque por uma senha sua.
   // Não é uma segurança real, pois roda no navegador do visitante.
+  // Esta é a senha do painel do CLIENTE (quem encomendou o convite) —
+  // ele vê só a lista de confirmações, nada de rastreamento de aberturas.
   adminPasscode: '1234',
+
+  // --- Sua marca, como criador(a) do convite ---
+  // Aparece só de forma discreta: uma linha pequena no rodapé do convite
+  // e uma linha na descrição do evento quando alguém adiciona a festa
+  // à própria agenda. Não interfere em nada do convite em si.
+  creator: {
+    name: ' jefferon',              // como você quer ser identificado
+    whatsappNumber: '5511946084421', // DDI + DDD + número, só dígitos
+    // {guestName} é substituído automaticamente pelo nome do aniversariante
+    messageTemplate: 'Oi! Vi o convite digital da {guestName} e adorei — quero fazer o meu também!'
+  },
+
+  // --- Senha do SEU painel exclusivo (meu-painel.html) ---
+  // Diferente da senha do admin.html. Só você deve conhecer esta senha.
+  // Nele você vê quantas pessoas abriram o convite e quem clicou para
+  // pedir o convite delas — o cliente (dono da festa) não tem acesso a isso.
+  creatorPasscode: '123456789',
 
   // --- Endereço público do site, usado pelo gerador de links individuais
   // no admin.html. Preencha com o link da Vercel depois de publicar

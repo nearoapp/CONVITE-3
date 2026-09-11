@@ -66,6 +66,40 @@ async function salvarConvidado(dados) {
 }
 
 /* ============================================================
+   RASTREAMENTO EXCLUSIVO DO CRIADOR (aberturas e interesse)
+   Fica em coleções separadas do Firestore ("aberturas" e "leads"),
+   nunca aparece no admin.html do cliente — só no meu-painel.html,
+   protegido pela senha creatorPasscode. É silencioso: não mostra
+   nada na tela do convidado e nunca bloqueia a experiência dele.
+   ============================================================ */
+async function registrarAbertura() {
+  if (!db) return;
+  try {
+    await db.collection('aberturas').add({
+      guestName: CONFIG.guestName,
+      linkDe: lerConvidadoDaUrl() || null,
+      abertoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (erro) {
+    // Silencioso: rastreamento nunca deve atrapalhar a experiência do convidado.
+  }
+}
+
+async function registrarLead(nomeConvidado) {
+  if (!db) return;
+  try {
+    await db.collection('leads').add({
+      guestName: CONFIG.guestName,
+      linkDe: nomeConvidado || lerConvidadoDaUrl() || null,
+      origem: 'rodape',
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  } catch (erro) {
+    // Silencioso, mesmo motivo acima.
+  }
+}
+
+/* ============================================================
    ÍCONES DE LINHA (estilo da referência) PARA OS PRESENTES
    ============================================================ */
 const ICONES_PRESENTE = {
@@ -165,6 +199,21 @@ function preencherConteudo() {
     audio.src = CONFIG.musicUrl;
     botaoMusica.hidden = false;
   }
+
+  const linkCriador = document.getElementById('footer-creator-link');
+  if (linkCriador && CONFIG.creator && CONFIG.creator.whatsappNumber) {
+    linkCriador.textContent = CONFIG.creator.name || 'convites digitais';
+    linkCriador.addEventListener('click', (event) => {
+      event.preventDefault();
+      const nomeConvidado = lerConvidadoDaUrl();
+      registrarLead(nomeConvidado);
+      const mensagem = (CONFIG.creator.messageTemplate || 'Oi! Vi o convite da {guestName} e quero um assim.')
+        .replace('{guestName}', CONFIG.guestName);
+      window.open(`https://wa.me/${CONFIG.creator.whatsappNumber}?text=${encodeURIComponent(mensagem)}`, '_blank', 'noopener');
+    });
+  } else if (linkCriador) {
+    linkCriador.closest('.invite-footer-credit').hidden = true;
+  }
 }
 
 /* ============================================================
@@ -192,6 +241,9 @@ function iniciarEnvelope() {
         /* o navegador pode bloquear; o botão flutuante continua disponível */
       });
     }
+
+    // Registra a abertura real do convite (visível só no seu painel).
+    registrarAbertura();
 
     // 4) por fim, a tela do envelope se dissolve revelando o convite
     setTimeout(() => {
@@ -344,6 +396,15 @@ function iniciarCalendario() {
     const fim = new Date(inicio.getTime() + 4 * 60 * 60 * 1000); // duração de 4h
     const formatar = (data) => data.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
 
+    // Descrição do evento: mensagem principal + uma linha discreta de
+    // crédito, só visível para quem abrir os detalhes do compromisso
+    // na própria agenda (fica lá, sem aparecer no convite).
+    let descricao = 'Venha comemorar com a gente!';
+    if (CONFIG.creator && CONFIG.creator.whatsappNumber) {
+      descricao += `\\n\\nConvite digital criado por ${CONFIG.creator.name || ''}. `
+        + `Quer o seu? https://wa.me/${CONFIG.creator.whatsappNumber}`;
+    }
+
     const conteudo = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
@@ -354,7 +415,7 @@ function iniciarCalendario() {
       `DTEND:${formatar(fim)}`,
       `SUMMARY:Aniversário de ${CONFIG.guestName}`,
       `LOCATION:${CONFIG.venueAddress}`,
-      'DESCRIPTION:Venha comemorar com a gente!',
+      `DESCRIPTION:${descricao}`,
       'END:VEVENT',
       'END:VCALENDAR'
     ].join('\r\n');

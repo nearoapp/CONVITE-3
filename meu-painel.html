@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meu painel — Rastreamento (uso exclusivo do criador)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Tela de senha (senha própria, diferente da do admin.html do cliente) -->
+  <div class="admin-lock" id="admin-lock">
+    <p class="admin-lock-title">Área restrita — só você</p>
+    <form class="admin-lock-form" id="admin-lock-form">
+      <input type="password" id="admin-lock-input" placeholder="Sua senha" autocomplete="current-password">
+      <button type="submit" class="btn btn-confirm">Entrar</button>
+      <p class="admin-lock-error" id="admin-lock-error"></p>
+    </form>
+  </div>
+
+  <!-- Painel (fica escondido até a senha correta) -->
+  <div class="admin-page" id="admin-page" hidden>
+    <div class="admin-header">
+      <h1 class="admin-title">Rastreamento deste convite</h1>
+      <p class="admin-count">
+        Aberturas: <strong id="stat-aberturas">0</strong>
+        &nbsp;·&nbsp; Interessados em pedir o próprio convite: <strong id="stat-leads">0</strong>
+      </p>
+    </div>
+    <p class="admin-source" id="admin-source">
+      Este painel é só seu — o cliente que encomendou o convite não tem acesso a ele
+      nem sabe que ele existe.
+    </p>
+
+    <h2 class="section-title" style="font-size:1.1rem; margin-top:2rem;">Quem abriu o convite</h2>
+    <div class="admin-table-wrap">
+      <table class="admin-table" id="table-aberturas" hidden>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Convite</th>
+            <th>Link de (convidado)</th>
+            <th>Aberto em</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-aberturas"></tbody>
+      </table>
+      <div class="admin-empty" id="empty-aberturas">Nenhuma abertura registrada ainda.</div>
+    </div>
+
+    <h2 class="section-title" style="font-size:1.1rem; margin-top:2rem;">Quem clicou para pedir o convite próprio</h2>
+    <div class="admin-table-wrap">
+      <table class="admin-table" id="table-leads" hidden>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Convite</th>
+            <th>Link de (convidado)</th>
+            <th>Clicou em</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-leads"></tbody>
+      </table>
+      <div class="admin-empty" id="empty-leads">Ninguém clicou ainda.</div>
+    </div>
+
+    <div class="admin-actions">
+      <button type="button" class="btn-ghost" id="btn-refresh">Atualizar</button>
+      <a href="index.html" class="btn-ghost">Voltar ao convite</a>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="meu-painel.js"></script>
+</body>
+</html>
