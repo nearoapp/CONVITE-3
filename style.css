@@ -509,6 +509,79 @@ section { position: relative; z-index: 1; margin-bottom: 3rem; }
   color: var(--lilac-text);
 }
 
+/* ---------- Saudação personalizada (link individual do convidado) ---------- */
+.personal-greeting {
+  text-align: center;
+  padding-bottom: 1.4rem;
+}
+
+.personal-greeting[hidden] {
+  display: none;
+}
+
+.personal-greeting-eyebrow {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.personal-greeting-name {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(2.4rem, 11vw, 3.4rem);
+  line-height: 1.15;
+  padding: 0 0.3em;
+  margin: 0;
+  color: var(--lilac-text);
+  background: linear-gradient(120deg, var(--lilac-text) 20%, var(--neon-gold) 45%, #f4dfa8 50%, var(--neon-gold) 55%, var(--lilac-text) 80%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(201, 161, 90, 0.3));
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+  animation:
+    hero-name-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards,
+    hero-name-shine 3.5s linear 0.9s infinite;
+}
+
+.personal-greeting-name::before,
+.personal-greeting-name::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-60%);
+  font-size: 0.3em;
+  color: var(--neon-gold);
+  opacity: 0;
+  animation: hero-name-sparkle 0.6s ease-out 0.75s forwards;
+}
+
+.personal-greeting-name::before {
+  left: -0.1em;
+}
+
+.personal-greeting-name::after {
+  right: -0.1em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .personal-greeting-name {
+    opacity: 1;
+    transform: none;
+    animation: none;
+    -webkit-text-fill-color: var(--lilac-text);
+  }
+  .personal-greeting-name::before,
+  .personal-greeting-name::after {
+    display: none;
+  }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   text-align: center;

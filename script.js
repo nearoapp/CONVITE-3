@@ -99,8 +99,18 @@ function lerConvidadoDaUrl() {
 function iniciarLinkIndividual() {
   const nomeConvidado = lerConvidadoDaUrl();
   if (!nomeConvidado) return;
+
   const campoNome = document.getElementById('rsvp-name');
   if (campoNome && !campoNome.value) campoNome.value = nomeConvidado;
+
+  // Primeiro nome apenas, para a saudação ficar mais elegante
+  const primeiroNome = nomeConvidado.split(/\s+/)[0];
+  const saudacao = document.getElementById('personal-greeting');
+  const saudacaoNome = document.getElementById('personal-greeting-name');
+  if (saudacao && saudacaoNome) {
+    saudacaoNome.textContent = primeiroNome;
+    saudacao.hidden = false;
+  }
 }
 
 function preencherConteudo() {
