@@ -103,6 +103,7 @@ function iniciarGeradorLinks() {
       linha.innerHTML = `
         <span>${nome}</span>
         <input type="text" value="${link}" readonly>
+        <a href="${link}" target="_blank" rel="noopener noreferrer" class="btn-abrir-link">Abrir</a>
         <button type="button">Copiar</button>
       `;
       linha.querySelector('button').addEventListener('click', async () => {
