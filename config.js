@@ -41,6 +41,7 @@ window.CONFIG = {
       name: 'Roupas - Tamanho P/36',
       desc: 'Modelos e cores à sua escolha',
       link: 'https://www.google.com/aclk?sa=L&ai=DChsSEwivyOn9p-WWAxUNRkgAHSUyAigYACICCAEQABoCY2U&co=1&gclid=EAIaIQobChMIr8jp_afllgMVDUZIAB0lMgIoEAAYASAAEgKD6fD_BwE&sph&cid=CAAS0gHkaBiwcUkVUfrsNSGTct0JwP64hyuknAGYCJ-f93Spu8dR7qgkH_pNJOKbtxJUb33Hx1L_-x3D96DYup4AC6YJfDmOO0KGBKdqnTD7aIqm0i1RG_UewvMKAdCpjr-WvvVanKrm37SGWrUDrgfOKDbXwcqzgkH4W6vtvwUCBcp4J8Ql6qTwiFECcNgtHuTO-4v5F-QY6p8_rk_D7SyGcO2Nxfs_TqsOUH_6goIL4yenTW0UcvCmdZc6gHioH6RcSOkRYT5cXCjJJPCpTS-ou0--Kr4&cce=1&sig=AOD64_3sKjdYtWiDVSJP-UD6NwxznA8K1g&q&adurl&ved=2ahUKEwiyxeT9p-WWAxXNEbkGHd1yMjAQ0Qx6BAgWEAE'
+    },
     {
       icon: 'calcado',
       name: 'Calçados - Tamanho 37',
