@@ -76,17 +76,31 @@ function formatarData(valor) {
 }
 
 /* ---------- Renderização da lista ---------- */
+let listaAtual = [];
+let filtroAtual = 'todos';
+
 function renderizarLista(lista) {
+  listaAtual = lista;
   const tabela = document.getElementById('admin-table');
   const corpo = document.getElementById('admin-tbody');
   const vazio = document.getElementById('admin-empty');
-  const total = document.getElementById('admin-total');
+  const totalConfirmados = document.getElementById('admin-total-confirmados');
+  const totalRecusados = document.getElementById('admin-total-recusados');
 
-  const totalPessoas = lista.reduce((soma, item) => soma + 1 + (Number(item.acompanhantes) || 0), 0);
-  total.textContent = totalPessoas;
+  // Trata registros antigos que não tinham o campo "status" (eram todos confirmações).
+  const normalizada = lista.map((item) => ({ ...item, status: item.status || 'confirmado' }));
+
+  const confirmados = normalizada.filter((item) => item.status === 'confirmado');
+  const recusados = normalizada.filter((item) => item.status === 'recusado');
+  const pessoasConfirmadas = confirmados.reduce((soma, item) => soma + 1 + (Number(item.acompanhantes) || 0), 0);
+
+  totalConfirmados.textContent = pessoasConfirmadas;
+  totalRecusados.textContent = recusados.length;
+
+  const filtrada = normalizada.filter((item) => filtroAtual === 'todos' || item.status === filtroAtual);
   corpo.innerHTML = '';
 
-  if (lista.length === 0) {
+  if (filtrada.length === 0) {
     tabela.hidden = true;
     vazio.hidden = false;
     return;
@@ -95,16 +109,31 @@ function renderizarLista(lista) {
   tabela.hidden = false;
   vazio.hidden = true;
 
-  lista.forEach((convidado, indice) => {
+  filtrada.forEach((convidado, indice) => {
     const linha = document.createElement('tr');
+    const statusRotulo = convidado.status === 'recusado'
+      ? '<span class="status-pill status-pill--recusado">Não vai</span>'
+      : '<span class="status-pill status-pill--confirmado">Confirmado</span>';
     linha.innerHTML = `
       <td>${indice + 1}</td>
       <td>${convidado.nome || '—'}</td>
-      <td>${convidado.acompanhantes ? '+' + convidado.acompanhantes : '—'}</td>
+      <td>${statusRotulo}</td>
+      <td>${convidado.status === 'recusado' ? '—' : (convidado.acompanhantes ? '+' + convidado.acompanhantes : '—')}</td>
       <td>${convidado.mensagem || '—'}</td>
       <td>${formatarData(convidado.confirmadoEm)}</td>
     `;
     corpo.appendChild(linha);
+  });
+}
+
+function iniciarFiltros() {
+  document.querySelectorAll('.admin-filter-btn').forEach((botao) => {
+    botao.addEventListener('click', () => {
+      filtroAtual = botao.dataset.filtro;
+      document.querySelectorAll('.admin-filter-btn').forEach((b) => b.classList.remove('is-active'));
+      botao.classList.add('is-active');
+      renderizarLista(listaAtual);
+    });
   });
 }
 
@@ -160,6 +189,7 @@ function iniciarPainel() {
     : 'Sem banco configurado — mostrando apenas confirmações feitas neste navegador.';
 
   carregarConvidados();
+  iniciarFiltros();
 
   document.getElementById('btn-refresh').addEventListener('click', carregarConvidados);
   document.getElementById('btn-clear').addEventListener('click', limparLista);

@@ -218,26 +218,37 @@
       <svg class="section-flower" viewBox="0 0 60 60" aria-hidden="true"><use href="#floral-single"></use></svg>
       <h2 class="section-title">Confirmar presença</h2>
       <p class="section-subtitle">Confirme sua presença para eu organizar tudo certinho</p>
-      <p class="rsvp-count" id="rsvp-count-wrap" hidden>
-        <span id="rsvp-count">0</span> pessoas confirmadas até agora
-      </p>
       <form id="rsvp-form" class="rsvp-form" novalidate>
         <label for="rsvp-name" class="rsvp-label">Seu nome completo</label>
         <input type="text" id="rsvp-name" name="rsvp-name" placeholder="Digite seu nome" required autocomplete="name">
 
-        <label for="rsvp-companions" class="rsvp-label">Vai levar acompanhante?</label>
-        <select id="rsvp-companions" name="rsvp-companions">
-          <option value="0">Vou sozinho(a)</option>
-          <option value="1">+1 acompanhante</option>
-          <option value="2">+2 acompanhantes</option>
-          <option value="3">+3 acompanhantes</option>
-          <option value="4">+4 acompanhantes</option>
-        </select>
+        <label class="rsvp-label">Você vai poder comparecer?</label>
+        <div class="rsvp-status-options">
+          <label class="rsvp-status-option">
+            <input type="radio" name="rsvp-status" value="confirmado" checked>
+            <span>Sim, vou! 🎉</span>
+          </label>
+          <label class="rsvp-status-option">
+            <input type="radio" name="rsvp-status" value="recusado">
+            <span>Não vou poder ir</span>
+          </label>
+        </div>
+
+        <div id="rsvp-companions-wrap">
+          <label for="rsvp-companions" class="rsvp-label">Vai levar acompanhante?</label>
+          <select id="rsvp-companions" name="rsvp-companions">
+            <option value="0">Vou sozinho(a)</option>
+            <option value="1">+1 acompanhante</option>
+            <option value="2">+2 acompanhantes</option>
+            <option value="3">+3 acompanhantes</option>
+            <option value="4">+4 acompanhantes</option>
+          </select>
+        </div>
 
         <label for="rsvp-message" class="rsvp-label">Deixe um recado (opcional)</label>
         <textarea id="rsvp-message" name="rsvp-message" rows="2" placeholder="Um carinho para a pessoa aniversariante"></textarea>
 
-        <button type="submit" class="btn btn-confirm">Confirmar presença</button>
+        <button type="submit" class="btn btn-confirm" id="btn-rsvp-submit">Confirmar presença</button>
       </form>
       <p class="rsvp-feedback" id="rsvp-feedback" role="status" aria-live="polite"></p>
     </section>

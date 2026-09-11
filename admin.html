@@ -24,10 +24,19 @@
   <!-- Painel (fica escondido até a senha correta) -->
   <div class="admin-page" id="admin-page" hidden>
     <div class="admin-header">
-      <h1 class="admin-title">Lista de confirmados</h1>
-      <p class="admin-count">Total de pessoas: <strong id="admin-total">0</strong></p>
+      <h1 class="admin-title">Lista de convidados</h1>
+      <p class="admin-count">
+        Confirmados: <strong id="admin-total-confirmados">0</strong>
+        &nbsp;·&nbsp; Não vão: <strong id="admin-total-recusados">0</strong>
+      </p>
     </div>
     <p class="admin-source" id="admin-source"></p>
+
+    <div class="admin-filters" id="admin-filters">
+      <button type="button" class="admin-filter-btn is-active" data-filtro="todos">Todos</button>
+      <button type="button" class="admin-filter-btn" data-filtro="confirmado">Confirmados</button>
+      <button type="button" class="admin-filter-btn" data-filtro="recusado">Não vão</button>
+    </div>
 
     <div class="admin-table-wrap">
       <table class="admin-table" id="admin-table" hidden>
@@ -35,15 +44,16 @@
           <tr>
             <th>#</th>
             <th>Nome</th>
+            <th>Status</th>
             <th>Acompanhantes</th>
             <th>Recado</th>
-            <th>Confirmado em</th>
+            <th>Respondido em</th>
           </tr>
         </thead>
         <tbody id="admin-tbody"></tbody>
       </table>
       <div class="admin-empty" id="admin-empty">
-        Nenhuma confirmação de presença ainda.
+        Nenhuma resposta ainda.
       </div>
     </div>
 

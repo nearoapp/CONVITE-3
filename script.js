@@ -49,6 +49,7 @@ async function salvarConvidado(dados) {
     try {
       await db.collection('convidados').add({
         nome: dados.nome,
+        status: dados.status,
         acompanhantes: dados.acompanhantes,
         mensagem: dados.mensagem,
         confirmadoEm: firebase.firestore.FieldValue.serverTimestamp()
@@ -61,31 +62,6 @@ async function salvarConvidado(dados) {
   const lista = lerConvidadosLocal();
   lista.push({ ...dados, confirmadoEm: new Date().toISOString() });
   gravarConvidadosLocal(lista);
-}
-
-function iniciarContadorConfirmados() {
-  const wrap = document.getElementById('rsvp-count-wrap');
-  const elCount = document.getElementById('rsvp-count');
-  if (!wrap || !elCount) return;
-
-  function total(lista) {
-    return lista.reduce((soma, item) => soma + 1 + (Number(item.acompanhantes) || 0), 0);
-  }
-
-  if (db) {
-    db.collection('convidados').onSnapshot(
-      (snapshot) => {
-        const lista = snapshot.docs.map((doc) => doc.data());
-        elCount.textContent = total(lista);
-        wrap.hidden = lista.length === 0;
-      },
-      (erro) => console.error('Não foi possível ler o contador ao vivo.', erro)
-    );
-  } else {
-    const lista = lerConvidadosLocal();
-    elCount.textContent = total(lista);
-    wrap.hidden = lista.length === 0;
-  }
 }
 
 /* ============================================================
@@ -400,36 +376,60 @@ function abrirWhatsapp(nome) {
 function iniciarRsvp() {
   const form = document.getElementById('rsvp-form');
   const feedback = document.getElementById('rsvp-feedback');
+  const wrapAcompanhantes = document.getElementById('rsvp-companions-wrap');
+  const botaoEnviar = document.getElementById('btn-rsvp-submit');
+  const radiosStatus = form.querySelectorAll('input[name="rsvp-status"]');
+
+  // Ajusta o texto do botão e some com o campo de acompanhante
+  // quando a pessoa marca que não vai poder ir.
+  function atualizarVisualStatus() {
+    const status = form.querySelector('input[name="rsvp-status"]:checked').value;
+    const vaiComparecer = status === 'confirmado';
+    wrapAcompanhantes.style.display = vaiComparecer ? '' : 'none';
+    botaoEnviar.textContent = vaiComparecer ? 'Confirmar presença' : 'Enviar resposta';
+    botaoEnviar.classList.toggle('is-recusado', !vaiComparecer);
+  }
+  radiosStatus.forEach((radio) => radio.addEventListener('change', atualizarVisualStatus));
+  atualizarVisualStatus();
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     const campoNome = document.getElementById('rsvp-name');
     const campoAcompanhantes = document.getElementById('rsvp-companions');
     const campoMensagem = document.getElementById('rsvp-message');
+    const status = form.querySelector('input[name="rsvp-status"]:checked').value;
+    const vaiComparecer = status === 'confirmado';
 
     const nome = campoNome.value.trim();
     if (!nome) {
-      feedback.textContent = 'Digite seu nome para confirmar.';
+      feedback.textContent = 'Digite seu nome para continuar.';
       campoNome.focus();
       return;
     }
 
-    const botaoEnviar = form.querySelector('button[type="submit"]');
     botaoEnviar.disabled = true;
-    feedback.textContent = 'Confirmando presença...';
+    feedback.textContent = vaiComparecer ? 'Confirmando presença...' : 'Enviando resposta...';
 
     await salvarConvidado({
       nome,
-      acompanhantes: Number(campoAcompanhantes.value) || 0,
+      status,
+      acompanhantes: vaiComparecer ? Number(campoAcompanhantes.value) || 0 : 0,
       mensagem: campoMensagem.value.trim()
     });
 
-    dispararConfete();
-    feedback.textContent = `Presença confirmada, ${nome}! Nos vemos na festa 🎉`;
+    if (vaiComparecer) {
+      dispararConfete();
+      feedback.textContent = `Presença confirmada, ${nome}! Nos vemos na festa 🎉`;
+    } else {
+      feedback.textContent = `Obrigado por avisar, ${nome}. Sentiremos sua falta! 💛`;
+    }
     form.reset();
+    atualizarVisualStatus();
     botaoEnviar.disabled = false;
 
-    setTimeout(() => abrirWhatsapp(nome), 600);
+    if (vaiComparecer) {
+      setTimeout(() => abrirWhatsapp(nome), 600);
+    }
   });
 }
 
@@ -460,7 +460,6 @@ document.addEventListener('DOMContentLoaded', () => {
   preencherConteudo();
   iniciarEnvelope();
   iniciarContagem();
-  iniciarContadorConfirmados();
   iniciarMusica();
   iniciarMenuAtalhos();
   iniciarCalendario();

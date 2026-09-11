@@ -697,10 +697,50 @@ section { position: relative; z-index: 1; margin-bottom: 3rem; }
   font-weight: 700;
 }
 
+.rsvp-status-options {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.rsvp-status-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 0.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.rsvp-status-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rsvp-status-option:has(input:checked) {
+  border-color: var(--neon-purple);
+  color: var(--lilac-text);
+  background: var(--bg-panel-alt);
+}
+
 .btn-confirm {
   background: linear-gradient(120deg, var(--neon-gold), var(--neon-pink));
   color: #0a0416;
   box-shadow: 0 6px 18px rgba(207, 155, 63, 0.35);
+}
+
+.btn-confirm.is-recusado {
+  background: linear-gradient(120deg, #b07a8c, #6b1332);
+  color: #fff;
 }
 
 .rsvp-feedback {
@@ -876,7 +916,7 @@ button:focus-visible,
   background: var(--bg-panel);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .admin-table {
@@ -941,10 +981,51 @@ button:focus-visible,
 .admin-source {
   font-size: 0.78rem;
   color: var(--text-muted);
-  margin-bottom: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 .admin-source strong { color: var(--neon-blue); }
+
+.admin-filters {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.admin-filter-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-filter-btn.is-active {
+  background: var(--neon-purple);
+  border-color: var(--neon-purple);
+  color: #fff;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.status-pill--confirmado {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2f8f37;
+}
+
+.status-pill--recusado {
+  background: rgba(156, 31, 82, 0.12);
+  color: var(--lilac-text);
+}
 
 /* ---------- Tela de senha do admin ---------- */
 .admin-lock {
@@ -957,6 +1038,8 @@ button:focus-visible,
   padding: 2rem;
   text-align: center;
 }
+
+.admin-lock[hidden] { display: none; }
 
 .admin-lock-title {
   font-family: var(--font-display);
