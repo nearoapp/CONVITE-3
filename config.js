@@ -90,11 +90,11 @@ window.CONFIG = {
   // crie um projeto gratuito em https://console.firebase.google.com,
   // ative o Firestore e cole as credenciais do seu projeto aqui:
   firebase: {
-    apiKey: '',
-    authDomain: '',
-    projectId: '',
-    storageBucket: '',
-    messagingSenderId: '',
-    appId: ''
+    apiKey: 'AIzaSyBT4sfNvQ71PxfJj8ZhPQXF0CLWJSc17D0',
+    authDomain: 'convite-684a2.firebaseapp.com',
+    projectId: 'convite-684a2',
+    storageBucket: 'convite-684a2.firebasestorage.app',
+    messagingSenderId: '539161883996',
+    appId: '1:539161883996:web:e271df279301b55aadbd99'
   }
 };
