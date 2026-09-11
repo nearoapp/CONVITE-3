@@ -226,12 +226,14 @@ function iniciarEnvelope() {
   const audio = document.getElementById('bg-music');
 
   function abrir() {
-    // 1) selo "quebra" e some, a aba abre e a carta desliza para fora
+    // 1) o selo treme e "quebra" saindo voando, a aba abre com um leve
+    //    efeito de mola e a carta desliza para fora com uma leve rotação
     envelope.classList.add('is-open');
     // 2) ao mesmo tempo, o envelope inteiro cresce até preencher a tela
-    //    (mesmo efeito de zoom do vídeo de referência)
+    //    (o zoom só começa de fato depois que a carta termina de sair,
+    //    veja o delay definido no CSS de .envelope-stage)
     screen.classList.add('is-zooming');
-    // 3) o convite já começa a aparecer por trás, com um leve zoom-in
+    // 3) o convite aparece por trás, revelado junto com o zoom final
     invite.classList.add('is-visible');
 
     // O clique no envelope conta como gesto do usuário, então já
@@ -245,16 +247,25 @@ function iniciarEnvelope() {
     // Registra a abertura real do convite (visível só no seu painel).
     registrarAbertura();
 
-    // 4) por fim, a tela do envelope se dissolve revelando o convite
+    // 4) um brilho suave marca a passagem entre envelope e convite
+    const flash = document.getElementById('envelope-flash');
+    if (flash) {
+      setTimeout(() => {
+        flash.classList.add('is-active');
+        setTimeout(() => flash.classList.remove('is-active'), 380);
+      }, 2500);
+    }
+
+    // 5) por fim, a tela do envelope se dissolve revelando o convite
     setTimeout(() => {
       screen.classList.add('is-hidden');
-    }, 1050);
+    }, 3600);
 
     setTimeout(() => {
       screen.style.display = 'none';
       invite.setAttribute('aria-hidden', 'false');
       document.body.classList.remove('no-scroll');
-    }, 1700);
+    }, 4250);
   }
 
   screen.addEventListener('click', abrir, { once: true });
