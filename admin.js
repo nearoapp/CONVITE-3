@@ -6,6 +6,16 @@ const CONFIG = window.CONFIG;
 let db = null;
 
 /* ---------- Portão de senha (proteção básica, não é segurança real) ---------- */
+// A senha real não fica no código — comparamos o hash (SHA-256) do que a
+// pessoa digitou com o hash salvo em CONFIG.adminPasscodeHash.
+async function calcularHash(texto) {
+  const bytes = new TextEncoder().encode(texto);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 function iniciarPortaoDeSenha() {
   const telaSenha = document.getElementById('admin-lock');
   const painel = document.getElementById('admin-page');
@@ -13,9 +23,10 @@ function iniciarPortaoDeSenha() {
   const input = document.getElementById('admin-lock-input');
   const erro = document.getElementById('admin-lock-error');
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (input.value === CONFIG.adminPasscode) {
+    const hashDigitado = await calcularHash(input.value);
+    if (hashDigitado === CONFIG.adminPasscodeHash) {
       telaSenha.hidden = true;
       painel.hidden = false;
       iniciarPainel();

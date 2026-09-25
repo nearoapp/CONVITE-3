@@ -802,53 +802,106 @@ section { position: relative; z-index: 1; margin-bottom: 3rem; }
 
 .btn-calendar:hover { border-color: var(--neon-gold); color: var(--neon-gold); }
 
-/* ---------- Presentes ---------- */
-.gifts-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.8rem;
+/* ---------- Presentes ("um mimo, se desejar") ---------- */
+.gifts-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  color: var(--neon-purple);
+  text-align: center;
+  margin-bottom: 1.1rem;
+}
+.gifts-heart { color: var(--text-primary); font-size: 1.3rem; vertical-align: -2px; }
+
+.gifts-intro { margin-bottom: 1.3rem; }
+.gifts-intro-paragraph {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-.gift-card {
+.gifts-list {
+  list-style: none;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.gifts-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.98rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+.gifts-list-heart { color: var(--neon-purple); flex-shrink: 0; margin-top: 0.1em; }
+
+.gifts-note-card {
+  position: relative;
   background: var(--bg-panel);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
-  padding: 1.1rem 0.8rem;
-  text-align: center;
+  box-shadow: var(--shadow-soft);
+  padding: 1.4rem 1.3rem 1.2rem;
+  margin-bottom: 1.4rem;
+  /* leve efeito de "papel rasgado" no topo */
+  clip-path: polygon(
+    0% 4%, 6% 0%, 14% 5%, 22% 0%, 30% 5%, 38% 0%, 46% 5%, 54% 0%, 62% 5%,
+    70% 0%, 78% 5%, 86% 0%, 94% 5%, 100% 0%, 100% 100%, 0% 100%
+  );
+}
+.gifts-note-title {
+  font-family: var(--font-script);
+  font-size: 1.6rem;
+  color: var(--neon-purple);
+  margin-bottom: 0.6rem;
+}
+.gifts-note-paragraph {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin-bottom: 0.8rem;
+}
+.gifts-note-paragraph:last-child { margin-bottom: 0; }
+
+.pix-qr-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--neon-gold);
+  border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  padding: 1.3rem 1rem;
 }
-
-.gift-card:hover,
-.gift-card:focus-visible {
-  transform: translateY(-4px);
-  border-color: var(--neon-pink);
-  box-shadow: 0 8px 24px rgba(194, 71, 143, 0.2);
+.pix-qr-canvas {
+  width: 176px;
+  height: 176px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
 }
-
-.gift-icon {
-  width: 40px;
-  height: 40px;
-  color: var(--lilac-text);
-}
-.gift-icon svg { width: 100%; height: 100%; }
-
-.gift-name {
-  font-family: var(--font-display);
+.pix-copy-btn {
+  background: linear-gradient(120deg, var(--neon-pink), var(--neon-purple));
+  color: #fffbfb;
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.03em;
-  color: var(--lilac-text);
+  box-shadow: 0 6px 18px rgba(156, 31, 82, 0.3);
+  transition: transform 0.2s ease;
 }
-
-.gift-desc {
-  font-size: 0.78rem;
-  color: var(--text-muted);
-  line-height: 1.4;
+.pix-copy-btn:active { transform: scale(0.97); }
+.pix-qr-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  color: var(--neon-purple);
+  margin: 0;
 }
 
 /* ---------- RSVP ---------- */

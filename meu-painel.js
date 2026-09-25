@@ -26,6 +26,16 @@ function iniciarBanco() {
   }
 }
 
+// A senha real não fica no código — comparamos o hash (SHA-256) do que a
+// pessoa digitou com o hash salvo em CONFIG.creatorPasscodeHash.
+async function calcularHash(texto) {
+  const bytes = new TextEncoder().encode(texto);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
 function iniciarPortaoDeSenha() {
   const telaSenha = document.getElementById('admin-lock');
   const painel = document.getElementById('admin-page');
@@ -33,9 +43,10 @@ function iniciarPortaoDeSenha() {
   const input = document.getElementById('admin-lock-input');
   const erro = document.getElementById('admin-lock-error');
 
-  form.addEventListener('submit', (event) => {
+  form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (input.value === CONFIG.creatorPasscode) {
+    const hashDigitado = await calcularHash(input.value);
+    if (hashDigitado === CONFIG.creatorPasscodeHash) {
       telaSenha.hidden = true;
       painel.hidden = false;
       iniciarPainel();

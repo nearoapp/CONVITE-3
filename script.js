@@ -100,17 +100,91 @@ async function registrarLead(nomeConvidado) {
 }
 
 /* ============================================================
-   ÍCONES DE LINHA (estilo da referência) PARA OS PRESENTES
+   PIX — MONTAGEM DO PAYLOAD "COPIA E COLA" (BR Code / EMV) E QR CODE
+   Gera o mesmo tipo de código que qualquer app de banco lê para abrir a
+   tela de pagamento (não é só uma imagem com o texto da chave dentro).
    ============================================================ */
-const ICONES_PRESENTE = {
-  bolsa: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 18h24l2 24H10l2-24z"/><path d="M17 18v-4a7 7 0 0 1 14 0v4"/></svg>',
-  perfume: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="17" y="16" width="14" height="24" rx="3"/><rect x="21" y="9" width="6" height="7" rx="1"/><path d="M24 4v3"/><circle cx="24" cy="27" r="4"/></svg>',
-  hidratante: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="15" y="14" width="18" height="26" rx="4"/><rect x="19" y="8" width="10" height="6" rx="1.5"/><path d="M20 22h8M20 28h8"/></svg>',
-  calcado: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M8 38l0-8a4 4 0 0 1 4-4h5a11 11 0 0 0 11-11v-3a6 6 0 0 1 6-6h1a7 7 0 0 1 7 7c0 6 2 12 8 16l7 5a4 4 0 0 1 2 4v0a4 4 0 0 1-4 4h-32a4 4 0 0 1-4-4z"/></svg>',
-  joia: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 16c3-4 8-6 10-6s7 2 10 6"/><path d="M11 18h26l-13 20-13-20z"/><circle cx="24" cy="13" r="3"/></svg>',
-  vestido: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M19 8l-4 6 5 3-8 22h24l-8-22 5-3-4-6"/><path d="M19 8c1.5 2 3 3 5 3s3.5-1 5-3"/></svg>',
-  calca: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 8h18l1 8-2 4 2 20h-7l-3-19-3 19h-7l2-20-2-4 1-8z"/></svg>'
-};
+function removerAcentos(texto) {
+  return (texto || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function camposTLV(id, valor) {
+  const tamanho = String(valor.length).padStart(2, '0');
+  return `${id}${tamanho}${valor}`;
+}
+
+function crc16Pix(payload) {
+  let crc = 0xffff;
+  for (let i = 0; i < payload.length; i++) {
+    crc ^= payload.charCodeAt(i) << 8;
+    for (let j = 0; j < 8; j++) {
+      crc = (crc & 0x8000) ? ((crc << 1) ^ 0x1021) & 0xffff : (crc << 1) & 0xffff;
+    }
+  }
+  return crc.toString(16).toUpperCase().padStart(4, '0');
+}
+
+function montarPayloadPix({ chave, nome, cidade }) {
+  const nomeLimpo = removerAcentos(nome).toUpperCase().slice(0, 25) || 'RECEBEDOR';
+  const cidadeLimpa = removerAcentos(cidade).toUpperCase().slice(0, 15) || 'SAO PAULO';
+  const contaPix = camposTLV('00', 'br.gov.bcb.pix') + camposTLV('01', chave);
+  let payload =
+    camposTLV('00', '01') +
+    camposTLV('26', contaPix) +
+    camposTLV('52', '0000') +
+    camposTLV('53', '986') +
+    camposTLV('58', 'BR') +
+    camposTLV('59', nomeLimpo) +
+    camposTLV('60', cidadeLimpa) +
+    camposTLV('62', camposTLV('05', '***')) +
+    '6304';
+  return payload + crc16Pix(payload);
+}
+
+function desenharQrCodePix() {
+  const cartao = document.getElementById('pix-qr-card');
+  const canvas = document.getElementById('pix-qr-canvas');
+  if (!cartao || !canvas || !CONFIG.pixKey || typeof qrcode !== 'function') return;
+
+  const payload = montarPayloadPix({
+    chave: CONFIG.pixKey,
+    nome: CONFIG.pixHolder,
+    cidade: CONFIG.pixCity
+  });
+
+  const qr = qrcode(0, 'M');
+  qr.addData(payload);
+  qr.make();
+
+  const modulos = qr.getModuleCount();
+  const tamanho = canvas.width; // canvas é quadrado (ver HTML)
+  const escala = tamanho / modulos;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, tamanho, tamanho);
+  ctx.fillStyle = '#fffbfb';
+  ctx.fillRect(0, 0, tamanho, tamanho);
+  ctx.fillStyle = '#6b1332';
+  for (let linha = 0; linha < modulos; linha++) {
+    for (let coluna = 0; coluna < modulos; coluna++) {
+      if (qr.isDark(linha, coluna)) {
+        ctx.fillRect(coluna * escala, linha * escala, Math.ceil(escala), Math.ceil(escala));
+      }
+    }
+  }
+  cartao.hidden = false;
+
+  const botaoCopiar = document.getElementById('pix-copy-btn');
+  if (botaoCopiar) {
+    botaoCopiar.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(CONFIG.pixKey);
+        mostrarToast('muito obrigada pelo carinho e generosidade', 'pix');
+      } catch (erro) {
+        mostrarToast(`Chave Pix: ${CONFIG.pixKey}`, 'pix');
+      }
+    });
+  }
+}
 
 /* ============================================================
    TRAVAR SCROLL ATÉ ABRIR O ENVELOPE
@@ -175,23 +249,51 @@ function preencherConteudo() {
 
   document.getElementById('rsvp-deadline') && (document.getElementById('rsvp-deadline').textContent = CONFIG.rsvpDeadline);
 
-  const grid = document.getElementById('gifts-grid');
-  grid.innerHTML = '';
-  CONFIG.giftCategories.forEach((gift) => {
-    const card = document.createElement('button');
-    card.type = 'button';
-    card.className = 'gift-card';
-    const svgIcone = ICONES_PRESENTE[gift.icon] || ICONES_PRESENTE.bolsa;
-    card.innerHTML = `
-      <span class="gift-icon" aria-hidden="true">${svgIcone}</span>
-      <span class="gift-name">${gift.name}</span>
-      <span class="gift-desc">${gift.desc}</span>
-    `;
-    card.addEventListener('click', () => {
-      window.open(gift.link, '_blank', 'noopener');
-    });
-    grid.appendChild(card);
-  });
+  const secaoPresentes = CONFIG.giftsSection;
+  if (secaoPresentes) {
+    const titulo = document.getElementById('gifts-title');
+    if (titulo) titulo.innerHTML = `${secaoPresentes.title} <span class="gifts-heart" aria-hidden="true">♡</span>`;
+
+    const intro = document.getElementById('gifts-intro');
+    if (intro) {
+      intro.innerHTML = '';
+      (secaoPresentes.intro || []).forEach((paragrafo) => {
+        const p = document.createElement('p');
+        p.className = 'gifts-intro-paragraph';
+        p.innerHTML = paragrafo.replace(/\n/g, '<br>');
+        intro.appendChild(p);
+      });
+    }
+
+    const lista = document.getElementById('gifts-list');
+    if (lista) {
+      lista.innerHTML = '';
+      (secaoPresentes.suggestions || []).forEach((item) => {
+        const li = document.createElement('li');
+        li.className = 'gifts-list-item';
+        li.innerHTML = `<span class="gifts-list-heart" aria-hidden="true">♥</span><span>${item}</span>`;
+        lista.appendChild(li);
+      });
+    }
+
+    const nota = secaoPresentes.note;
+    const notaCartao = document.getElementById('gifts-note-card');
+    if (nota && notaCartao) {
+      document.getElementById('gifts-note-title').textContent = nota.title || '';
+      const notaTexto = document.getElementById('gifts-note-text');
+      notaTexto.innerHTML = '';
+      (nota.paragraphs || []).forEach((paragrafo) => {
+        const p = document.createElement('p');
+        p.className = 'gifts-note-paragraph';
+        p.textContent = paragrafo;
+        notaTexto.appendChild(p);
+      });
+    } else if (notaCartao) {
+      notaCartao.hidden = true;
+    }
+  }
+
+  desenharQrCodePix();
 
   if (CONFIG.musicUrl) {
     const audio = document.getElementById('bg-music');

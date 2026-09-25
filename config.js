@@ -14,53 +14,56 @@ window.CONFIG = {
   displayTime: '17h',
 
   // --- Local ---
-  venueName: 'Espaço Salão de festas ',
+  venueName: 'Salão de festa 1',
   venueAddress: 'Rua Aratimbo, 389 - Vila Livieiro, São Paulo - SP',
   // Cole um link específico do Google Maps aqui, ou deixe '' para gerar
   // automaticamente a partir do endereço acima.
   mapsUrlOverride: '',
 
-  // --- Presentes sugeridos ---
-  // "icon" aceita um dos nomes prontos abaixo (estilo linha, igual referência):
-  // 'bolsa' | 'perfume' | 'hidratante' | 'calcado' | 'joia' | 'vestido' | 'calca'
-  giftCategories: [
-    {
-      icon: 'Acessorios',
-      name: 'Acessorios - Prata/Dourado',
-      desc: 'Colares, anéis ou brincos',
-      link: 'https://www.google.com/search?tbm=shop&q=joias+femininas'
-    },
-    {
-      icon: 'perfume',
-      name: 'Perfumes / Body Splash',
-      desc: 'Fragrâncias florais ou amadeiradas',
-      link:'https://www.google.com/goto?url=CAESkwEB6zswFU-qKyzpWVzV6KbpPzsDy6bGPGeH3WCLvRITjwxGLSY4pXXASc2bcPnvGYi_Aurdrs0abMrji80Wm2AtuRcvHd1CXzFHMnnFPWK1rYiUYr6WiC8J9gY2B0-v3RjP5NCladLhh02y7ahbclvIYeY36n5PNQuD1_NtvwtP0wWdH0QRsrr3NAhkNP9CSYxBMa0'
-    },
-    {
-      icon: 'vestido',
-      name: 'Roupas - Tamanho P/36',
-      desc: 'Modelos e cores à sua escolha',
-      link: 'https://www.google.com/aclk?sa=L&ai=DChsSEwivyOn9p-WWAxUNRkgAHSUyAigYACICCAEQABoCY2U&co=1&gclid=EAIaIQobChMIr8jp_afllgMVDUZIAB0lMgIoEAAYASAAEgKD6fD_BwE&sph&cid=CAAS0gHkaBiwcUkVUfrsNSGTct0JwP64hyuknAGYCJ-f93Spu8dR7qgkH_pNJOKbtxJUb33Hx1L_-x3D96DYup4AC6YJfDmOO0KGBKdqnTD7aIqm0i1RG_UewvMKAdCpjr-WvvVanKrm37SGWrUDrgfOKDbXwcqzgkH4W6vtvwUCBcp4J8Ql6qTwiFECcNgtHuTO-4v5F-QY6p8_rk_D7SyGcO2Nxfs_TqsOUH_6goIL4yenTW0UcvCmdZc6gHioH6RcSOkRYT5cXCjJJPCpTS-ou0--Kr4&cce=1&sig=AOD64_3sKjdYtWiDVSJP-UD6NwxznA8K1g&q&adurl&ved=2ahUKEwiyxeT9p-WWAxXNEbkGHd1yMjAQ0Qx6BAgWEAE'
-    },
-    {
-      icon: 'calcado',
-      name: 'Calçados - Tamanho 37',
-      desc: 'Sandálias, tênis ou sapatos',
-      link: 'https://www.google.com/search?tbm=shop&q=calcado+feminino+tamanho+36'
-    },
-    {
-      icon: 'calca',
-      name: 'Calças - Tamanho 36',
-      desc: 'Jeans, alfaiataria ou moletom',
-      link: 'https://www.google.com/search?tbm=shop&q=calca+feminina+tamanho+36'
+  // --- Sugestão de presentes ---
+  // Texto livre, no formato "um mimo, se desejar" (título + intro + lista
+  // com coraçõezinhos + recadinho sobre preferir receber em dinheiro).
+  // Itens marcados com [EDITE AQUI] estavam ilegíveis na foto de referência
+  // (trecho borrado) — troque pelo texto certo antes de publicar.
+  giftsSection: {
+    title: 'um mimo, se desejar',
+    intro: [
+      'antes de qualquer coisa...\na sua presença já é o maior\npresente que eu poderia receber.',
+      'mas, caso queira me presentear,\npreparei algumas sugestões\npara facilitar:'
+    ],
+    suggestions: [
+      'perfumes',
+      'maquiagem',
+      'acessórios',
+      '[EDITE AQUI]',
+      'produtos de skincare',
+      'livros',
+      '[EDITE AQUI]',
+      'decoração para quarto',
+      'ou qualquer lembrança escolhida com carinho.'
+    ],
+    note: {
+      title: 'um recadinho...',
+      paragraphs: [
+        'se for mais prático para você, também fico muito feliz em receber o valor que seria destinado ao presente. assim, consigo escolher algo que [EDITE AQUI] vou usar e guardar essa lembrança com muito carinho.',
+        'mas fique totalmente à vontade: seja um presente, um mimo ou apenas a sua presença, tudo será recebido com o mesmo carinho.'
+      ]
     }
-  ],
+  },
 
   // --- Pix para presentear ---
-  // Deixe pixKey vazio para esconder o atalho de Pix no menu.
+  // Deixe pixKey vazio para esconder o atalho de Pix no menu e o cartão
+  // de QR code na seção de presentes.
+  // ATENÇÃO: pixKeyType está como 'CPF' e o código-fonte desta página fica
+  // público (qualquer visitante consegue ver isso pelo navegador). Um CPF
+  // completo é dado sensível — o ideal é trocar para e-mail, celular ou
+  // chave aleatória antes de publicar. Veja o README para mais detalhes.
   pixKey: '58295787861',
   pixKeyType: 'CPF', // ex: 'CPF', 'E-mail', 'Celular', 'Aleatória'
   pixHolder: 'Livia Silva Rocha',
+  // Cidade do titular da chave Pix, usada só para montar o QR code
+  // (formato oficial do Banco Central exige uma cidade no payload).
+  pixCity: 'Sao Paulo',
 
   // --- RSVP / WhatsApp ---
   rsvpDeadline: '05 de novembro',
@@ -83,7 +86,11 @@ window.CONFIG = {
   // Não é uma segurança real, pois roda no navegador do visitante.
   // Esta é a senha do painel do CLIENTE (quem encomendou o convite) —
   // ele vê só a lista de confirmações, nada de rastreamento de aberturas.
-  adminPasscode: '1234',
+  // A senha em si NÃO fica em texto puro aqui — só o "hash" dela (uma
+  // impressão digital que não dá pra reverter para a senha original).
+  // A senha real está documentada no README, junto com o passo a passo
+  // pra trocar quando quiser.
+  adminPasscodeHash: '03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4',
 
   // --- Sua marca, como criador(a) do convite ---
   // Aparece só de forma discreta: uma linha pequena no rodapé do convite
@@ -100,7 +107,9 @@ window.CONFIG = {
   // Diferente da senha do admin.html. Só você deve conhecer esta senha.
   // Nele você vê quantas pessoas abriram o convite e quem clicou para
   // pedir o convite delas — o cliente (dono da festa) não tem acesso a isso.
-  creatorPasscode: '123456789',
+  // Mesma lógica do adminPasscodeHash acima: aqui só fica o hash, a senha
+  // real está no README.
+  creatorPasscodeHash: '15e2b0d3c33891ebb0f1ef609ec419420c20e320ce94c65fbc8c3312448eb225',
 
   // --- Endereço público do site, usado pelo gerador de links individuais
   // no admin.html. Preencha com o link da Vercel depois de publicar
