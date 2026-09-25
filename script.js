@@ -225,8 +225,13 @@ function preencherConteudo() {
   document.getElementById('guest-name').textContent = CONFIG.guestName;
   document.getElementById('guest-age').textContent = CONFIG.age || '';
 
-  // Iniciais para o monograma e o selo do envelope (ex.: "Maria Fernanda" -> "MF")
-  const iniciais = (() => {
+  // Iniciais para o monograma (acima do envelope) e o selo (círculo na aba
+  // do envelope). Por padrão são calculadas automaticamente a partir do
+  // nome (ex.: "Maria Fernanda" -> "MF"; "Livia" -> "LI"). Para usar letras
+  // diferentes, defina CONFIG.monogramInitials (ex.: 'L' ou 'LR') em
+  // config.js — se estiver preenchido, ele tem prioridade sobre o cálculo
+  // automático.
+  const iniciais = CONFIG.monogramInitials || (() => {
     const partes = (CONFIG.guestName || '').trim().split(/\s+/).filter(Boolean);
     if (partes.length === 0) return '';
     if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
