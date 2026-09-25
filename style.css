@@ -370,6 +370,51 @@ input { font-family: inherit; }
   opacity: 0.9;
 }
 
+/* Faíscas/luzes douradas saindo do selo quando o envelope abre — cada
+   uma "estoura" para fora em um ângulo diferente (ver --angle e --dist
+   inline no HTML), com um pequeno atraso escalonado (--delay) para
+   parecerem cintilando aos poucos em vez de todas de uma vez. */
+.envelope-sparks {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffaf0 0%, var(--neon-gold) 55%, transparent 78%);
+  box-shadow: 0 0 10px 3px rgba(249, 226, 178, 0.85);
+  opacity: 0;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+  animation-duration: 0.9s;
+  animation-delay: var(--delay, 0s);
+}
+
+.envelope.is-open .spark {
+  animation-name: spark-burst;
+}
+
+@keyframes spark-burst {
+  0% { opacity: 0; transform: rotate(var(--angle)) translateY(0) scale(0.4); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--angle)) translateY(calc(-1 * var(--dist))) scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spark { animation: none !important; opacity: 0 !important; }
+}
+
 .envelope-hint {
   position: relative;
   z-index: 1;
