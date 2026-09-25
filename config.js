@@ -35,17 +35,15 @@ window.CONFIG = {
       'perfumes',
       'maquiagem',
       'acessórios',
-      '[EDITE AQUI]',
       'produtos de skincare',
       'livros',
-      '[EDITE AQUI]',
       'decoração para quarto',
       'ou qualquer lembrança escolhida com carinho.'
     ],
     note: {
       title: 'um recadinho...',
       paragraphs: [
-        'se for mais prático para você, também fico muito feliz em receber o valor que seria destinado ao presente. assim, consigo escolher algo que [EDITE AQUI] vou usar e guardar essa lembrança com muito carinho.',
+        'se for mais prático para você, também fico muito feliz em receber o valor que seria destinado ao presente. assim, consigo escolher algo que vou usar e guardar essa lembrança com muito carinho.',
         'mas fique totalmente à vontade: seja um presente, um mimo ou apenas a sua presença, tudo será recebido com o mesmo carinho.'
       ]
     }
@@ -97,7 +95,7 @@ window.CONFIG = {
   // e uma linha na descrição do evento quando alguém adiciona a festa
   // à própria agenda. Não interfere em nada do convite em si.
   creator: {
-    name: ' jefferon',              // como você quer ser identificado
+    name: ' Jeff Convites',              // como você quer ser identificado
     whatsappNumber: '5511946084421', // DDI + DDD + número, só dígitos
     // {guestName} é substituído automaticamente pelo nome do aniversariante
     messageTemplate: 'Oi! Vi o convite digital da {guestName} e adorei — quero fazer o meu também!'
